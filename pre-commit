@@ -1,0 +1,25 @@
+#!/bin/sh
+# author: Elan Trybuch
+# email: eitrybuch@gmail.com
+# git: elaniobro
+# twitter: elaniobro
+# instagram: elaniobro
+# license: MIT
+
+# Check to see if we are on master branch. Stop accidental commits
+if [ $(git symbolic-ref HEAD 2>/dev/null) == "refs/heads/master" ]
+then
+
+echo "\033[48;5;124m                               .-------,                                  \033[0m"
+echo "\033[48;5;124m                             .'         '.                                \033[0m"
+echo "\033[48;5;124m                           .'  _ ___ _ __ '.                              \033[0m"
+echo "\033[48;5;124m                           |  (_' | / \|_) |                              \033[0m"
+echo "\033[48;5;124m                           |  ,_) | \_/|   |                              \033[0m"
+echo "\033[48;5;124m                           '.             .'                              \033[0m"
+echo "\033[48;5;124m                             '.         .'                                \033[0m"
+echo "\033[48;5;124m                               '-------'                                  \033[0m"
+echo "\033[48;5;124m     You can not commit to a master branch, (Use --no-verify to skip)     \033[0m"
+
+  exit 1
+fi
+exit 0
