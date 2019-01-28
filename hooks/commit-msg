@@ -7,14 +7,11 @@
 # license: MIT
 exec < /dev/tty
 
-# Clear the screen.
-clear
-
 COMMIT_FILE=$1
 COMMIT_MSG=$(cat $1)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 JIRA_ID=$(echo "$CURRENT_BRANCH" | grep -Eo "[A-Z0-9]{1,10}-?[A-Z0-9]+-\d+")
-SEPARATOR=$(echo ": ")
+SEPARATOR=$(echo ":")
 DEFAULT_ID="GIT-0000"
 
 run_generic_git_cmds() {
@@ -24,18 +21,18 @@ run_generic_git_cmds() {
 
     eval "git branch -m $CURRENT_BRANCH $DEFAULT_ID-$CURRENT_BRANCH"
     eval "git commit -m \"$DEFAULT_ID$SEPARATOR $COMMIT_MSG\"" > $COMMIT_FILE
-    exit 1
+    exit 0
 }
 
 # Git commands to run with the user entered jira issue prepended
 run_jira_git_cmds() {
     echo -e "The following commands where ran to follow best practices:"
     echo -e "\033[32mgit branch -m $CURRENT_BRANCH $ANSWER-$CURRENT_BRANCH"
-    echo -e "git commit -m \"$JIRA_ID$SEPARATOR $COMMIT_MSG\"\033[0m"
+    echo -e "git commit -m \"$ANSWER$SEPARATOR $COMMIT_MSG\"\033[0m"
 
     eval "git branch -m $CURRENT_BRANCH $ANSWER-$CURRENT_BRANCH"
-    eval "git commit -m \"$JIRA_ID$SEPARATOR $COMMIT_MSG\"" > $COMMIT_FILE
-    exit 1
+    echo "$ANSWER$SEPARATOR $COMMIT_MSG" > $COMMIT_FILE
+    exit 0
 }
 
 # Clears the user input
@@ -50,8 +47,10 @@ then
     echo -e "The JIRA ID: ['\033[1m\033[38;5;147m$JIRA_ID\033[0m'] was found in the branch naming and matched the jira id in the current branch name."
     echo -e "['\033[1m\033[38;5;147m$JIRA_ID\033[0m'] was prepended to commit message. (Use --no-verify to skip)"
 else
-    # Have some fun
+    # Clear the screen.
+    clear
 
+    # Have some fun
     echo "     ███████╗██╗      █████╗ ███╗   ██╗██╗ ██████╗ ██████╗ ██████╗  ██████╗      "
     echo "     ██╔════╝██║     ██╔══██╗████╗  ██║██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗     "
     echo "     █████╗  ██║     ███████║██╔██╗ ██║██║██║   ██║██████╔╝██████╔╝██║   ██║     "
