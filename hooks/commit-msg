@@ -1,0 +1,107 @@
+#!/bin/bash
+# author: Elan Trybuch
+# email: eitrybuch@gmail.com
+# git: elaniobro
+# twitter: elaniobro
+# instagram: elaniobro
+# license: MIT
+exec < /dev/tty
+
+COMMIT_FILE=$1
+COMMIT_MSG=$(cat $1)
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+JIRA_ID=$(echo "$CURRENT_BRANCH" | grep -Eo "[A-Z0-9]{1,10}-?[A-Z0-9]+-\d+")
+SEPARATOR=$(echo ":")
+DEFAULT_ID="GIT-0000"
+
+run_generic_git_cmds() {
+    echo -e "The following commands where ran to follow best practices:"
+    echo -e "\033[32mgit branch -m $CURRENT_BRANCH $DEFAULT_ID-$CURRENT_BRANCH"
+    echo -e "git commit -m \"$DEFAULT_ID$SEPARATOR $COMMIT_MSG\"\033[0m"
+
+    eval "git branch -m $CURRENT_BRANCH $DEFAULT_ID-$CURRENT_BRANCH"
+    eval "git commit -m \"$DEFAULT_ID$SEPARATOR $COMMIT_MSG\"" > $COMMIT_FILE
+    exit 0
+}
+
+# Git commands to run with the user entered jira issue prepended
+run_jira_git_cmds() {
+    echo -e "The following commands where ran to follow best practices:"
+    echo -e "\033[32mgit branch -m $CURRENT_BRANCH $ANSWER-$CURRENT_BRANCH"
+    echo -e "git commit -m \"$ANSWER$SEPARATOR $COMMIT_MSG\"\033[0m"
+
+    eval "git branch -m $CURRENT_BRANCH $ANSWER-$CURRENT_BRANCH"
+    echo "$ANSWER$SEPARATOR $COMMIT_MSG" > $COMMIT_FILE
+    exit 0
+}
+
+# Clears the user input
+clean_input() {
+    while read -r -t 0; do read -r; done
+}
+
+# if/else to verify if a jira id exists in the git branch a user is trying to commit to.
+if [ ! -z "$JIRA_ID" ];
+then
+    echo "$JIRA_ID$SEPARATOR $COMMIT_MSG" > $COMMIT_FILE
+    echo -e "The JIRA ID: ['\033[1m\033[38;5;147m$JIRA_ID\033[0m'] was found in the branch naming and matched the jira id in the current branch name."
+    echo -e "['\033[1m\033[38;5;147m$JIRA_ID\033[0m'] was prepended to commit message. (Use --no-verify to skip)"
+else
+    # Clear the screen.
+    clear
+
+    # Have some fun
+    echo "     ███████╗██╗      █████╗ ███╗   ██╗██╗ ██████╗ ██████╗ ██████╗  ██████╗      "
+    echo "     ██╔════╝██║     ██╔══██╗████╗  ██║██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗     "
+    echo "     █████╗  ██║     ███████║██╔██╗ ██║██║██║   ██║██████╔╝██████╔╝██║   ██║     "
+    echo "     ██╔══╝  ██║     ██╔══██║██║╚██╗██║██║██║   ██║██╔══██╗██╔══██╗██║   ██║     "
+    echo "     ███████╗███████╗██║  ██║██║ ╚████║██║╚██████╔╝██████╔╝██║  ██║╚██████╔╝     "
+    echo "     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝      "
+    echo ""
+    echo ""
+   # Alert user that their commit is breaking best practice standards
+    echo -e "\033[5m🚨🚨🚨🚨\033[25m 👮 \033[31mCOMMIT POLICE\033[0m 👮 \033[5m🚨🚨🚨🚨\033[25m"
+    echo -e "\033[33mYour branch does not follow naming conventions"
+    echo ""
+    echo ""
+    # No jira id found, proceed to the prompt
+    # Fake the title first first, so it appears on top
+    echo -e "\033[33mAre you currently workin on a jira issue?\033[0m"
+    # Add UX assist with prompt
+    PS3="Enter 1 or 2: "
+    #options=("Yes, I am." "No, work is nessesary, but not currently tracked.")
+    select options in Yes No
+    do
+        case $options in
+            "Yes")
+                break
+                ;;
+            "No")
+            run_generic_git_cmds
+            break
+            ;;
+        esac
+    done
+
+    # user prompt that awaits an input
+    while  read -p "Please enter the jira issue number: " ANSWER; do
+
+        # jira id regex check
+        regexp="([A-Z0-9]{1,10}-?[A-Z0-9]+-)"
+        if [[ $ANSWER =~ $regexp ]];
+        then
+            echo "You entered a valid jira issue"
+            # Execute the git commands with the JIRA_ID
+            run_jira_git_cmds
+            break
+        else
+            # Fail the prompt an re-peat question till formating is correct.
+            echo -e "\033[31m$ANSWER \033[0m is not an accepted format for a jira issue"
+            echo -e "Please use the following format: \033[32mJIRA-1234\033[0m"
+        fi
+    done
+
+    exit 1
+fi
+
+exit 0
