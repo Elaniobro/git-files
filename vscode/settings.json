@@ -1,0 +1,93 @@
+{
+    "css.validate": false,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "gitlens.keymap": "chorded",
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
+    },
+    "gitlens.historyExplorer.enabled": false,
+    "search.exclude": {
+        "**/node_modules": false,
+        "**/bower_components": false,
+        "**/builds-temp": true,
+        "**/tmp/scripts": true,
+        "**/jspm_packages": true,
+        "**/coverage": true,
+        "**/example/public": true,
+        "**/builds/": true,
+        "**/dist/": true
+    },
+        "scss.validate": false,
+    //DaftPunk
+    "slack.teamToken": "",
+    "slack.username": "Code Harder, Better, Faster, Stronger",
+    "slack.avatarUrl": "https://i.imgur.com/PknwyRX.png",
+    //Siri
+    // "slack.avatarUrl": "https://vignette2.wikia.nocookie.net/logopedia/images/3/3b/Siri1.png/revision/latest?cb=20160616160932",
+    // "slack.username": "Siri",
+    "stylelint.enable": true,
+    "sublimeTextKeymap.promptV3Features": true,
+    "workbench.activityBar.visible": true,
+    "workbench.statusBar.visible": true,
+    "window.zoomLevel": -1,
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Monokai",
+    "workbench.iconTheme": "vscode-great-icons",
+    "workbench.colorCustomizations": {
+        "editorWarning.foreground": "#fff600",
+        "editorWarning.border": "#d5ce02",
+        "editorError.foreground": "#ff0000",
+        "editorError.border": "#cd1717"
+    },
+    "gitlens.codeLens.authors.enabled": false,
+    "gitlens.hovers.currentLine.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "editor.renderWhitespace": "all",
+    "editor.wordWrap": "on",
+    "eslint.autoFixOnSave": false,
+    "editor.fontSize": 13,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.snippetSuggestions": "top",
+    "editor.formatOnPaste": true,
+    "editor.cursorBlinking": "phase",
+    "editor.fontFamily": "'Fira Code iScript', Menlo, Monaco, 'Courier New', monospace, Inconsolata",
+    "editor.fontLigatures": true,
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    //following will be in italic (=FlottFlott)
+                    "comment",
+                    "entity.name.type.class", //class names
+                    "keyword", //import, export, return…
+                    "constant", //String, Number, Boolean…, this, super
+                    "storage.modifier", //static keyword
+                    "storage.type.class.js", //class keyword
+                ],
+                "settings": {
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    //following will be excluded from italics (VSCode has some defaults for italics)
+                    "invalid",
+                    "keyword.operator",
+                    "constant.numeric.css",
+                    "keyword.other.unit.px.css",
+                    "constant.numeric.decimal.js",
+                    "constant.numeric.json"
+                ],
+                "settings": {
+                    "fontStyle": ""
+                }
+            }
+        ]
+    },
+    "terminal.integrated.fontFamily": "Inconsolata for Powerline",
+    "gitlens.views.fileHistory.enabled": false,
+    "gitlens.views.lineHistory.enabled": false,
+    "editor.minimap.enabled": true,
+    "editor.tabSize": 2
+}
